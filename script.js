@@ -15,6 +15,12 @@ let storage = []; //stores result data
 
 searchRetrieveButton();
 
+function fiveDayWeather() {
+  cityResult = document.querySelector("#cityresult").value;
+  searchBtnCreate();
+  weatherApi(cityResult);
+}
+
 function weatherApi() {
   let requestedUrl = `https://api.openweathermap.org/data/2.5/forecast?q={cityResult}&appid=ae0ce5ce2adbe30790cc3682a20204c0`;
 
