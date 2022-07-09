@@ -77,27 +77,46 @@ function weatherApi() {
               .find(".weather-icons")
               .html(`<img src='./assets/images/${iconNumber}.png'/>`);
             $(this).find("#uvi").text(chosenDate.uvi);
+
+            //uvindex color change logic
+            if (chosenDate.current.uvi < 3) {
+              $("#uvic").addClass("bg-success");
+              $("#uvic").removeClass("bg-warning");
+              $("#uvic").removeClass("bg-danger");
+            } else if (
+              chosenDate.current.uvi > 2 &&
+              chosenDate.current.uvi < 7
+            ) {
+              $("#uvic").addClass("bg-warning");
+              $("#uvic").removeClass("bg-success");
+              $("#uvic").removeClass("bg-danger");
+            } else if (chosenDate.current.uvi > 6) {
+              $("#uvic").addClass("bg-danger");
+              $("#uvic").removeClass("bg-success");
+              $("#uvic").removeClass("bg-warning");
+            }
           });
         });
     });
 }
 
-fetch(requestedUrl)
-  .then(function (response) {
-    return response.text();
-  })
-  .then(function (data) {
-    for (var i = 0; i < data.length; i++) {
-      console.log(data[i].main.temp);
-    }
-  });
+function dateConversion(dt) {
+  let date = new Date(dt * 1000);
+  let month = date.getMonth() + 1;
+  let day = date.getDate();
+  let year = date.getFullYear();
+  return `${month}/${day}/${year}`;
+}
 
-fetch(oneCallUrl)
-  .then(function (response) {
-    return response.text();
-  })
-  .then(function (data) {
-    for (let i = 0; i < data.length; i++) {
-      console.log(data[i].current.uvi);
+function tempCoversion(K) {
+  let f = Math.floor((K - 273.15) * (9 / 5) + 32);
+  return f;
+}
+
+function searchBtnCreate() {
+  for (let i = 0; i < storage.length; i++) {
+    if (storage[i] === cityResult) {
+      return;
     }
-  });
+  }
+}
