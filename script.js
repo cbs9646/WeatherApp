@@ -22,17 +22,41 @@ function fiveDayWeather() {
 }
 
 function weatherApi() {
-  let requestedUrl = `https://api.openweathermap.org/data/2.5/forecast?q={cityResult}&appid=ae0ce5ce2adbe30790cc3682a20204c0`;
+  let requestedUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityResult}&appid=ae0ce5ce2adbe30790cc3682a20204c0`;
 
   fetch(requestedUrl)
     .then(function (response) {
       return response.json();
     })
-    .then(function () {});
-}
+    .then(function (fiveDayWeather) {
+      console.log(fiveDayWeather);
+      cityDisplay.textContent = fiveDayWeather.city.name;
 
-let oneCallUrl =
-  "https://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily&appid=ae0ce5ce2adbe30790cc3682a20204c0";
+      let lat = fiveDayWeather.city.coord.lat;
+      let lon = fiveDayWeather.city.coord.lon;
+
+      cityResult = document.querySelector("#cityresult").value;
+      let requestedUrl2 = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude={part}&appid=ae0ce5ce2adbe30790cc3682a20204c0`;
+
+      fetch(requestedUrl2)
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (currentSet) {
+          console.log(currentSet);
+
+          forecast.textContent = currentSet.current.weather[0].main;
+          tempDisplay.textContent =
+            tempCoversion(currentSet.current.temp) + "°F";
+          windSpeed.textContent = currentSet.current.wind_speed + "MPH";
+          humidity.textContent = currentSet.current.humidity;
+          uvindexDisplay.textContent = currentSet.current.uvindexDisplay;
+          iconNumber = currentSet.current.weather[0].icon;
+          uvindex.textContent = currentSet.current.uvindex;
+          weatherIcon.innerHTML = `<img src='./assets/images/${iconNumber}.png'/>`;
+        });
+    });
+}
 
 fetch(requestedUrl)
   .then(function (response) {
