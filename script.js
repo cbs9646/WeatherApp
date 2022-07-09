@@ -9,12 +9,22 @@ let weatherIcon = document.querySelector("#weather-icon");
 let cityResultList = document.querySelector("#cityresultlist");
 let forecast = document.querySelector("#forecast");
 let uvindex = document.querySelector("#uvindex");
-let cityResult;
+let cityResult; //city search result
 let iconNumber;
-let storage = [];
+let storage = []; //stores result data
 
-let requestedUrl =
-  "https://api.openweathermap.org/data/2.5/forecast?q=dallas&cnt=1&appid=ae0ce5ce2adbe30790cc3682a20204c0";
+searchRetrieveButton();
+
+function weatherApi() {
+  let requestedUrl = `https://api.openweathermap.org/data/2.5/forecast?q={cityResult}&appid=ae0ce5ce2adbe30790cc3682a20204c0`;
+
+  fetch(requestedUrl)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function () {});
+}
+
 let oneCallUrl =
   "https://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily&appid=ae0ce5ce2adbe30790cc3682a20204c0";
 
