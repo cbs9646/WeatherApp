@@ -54,6 +54,30 @@ function weatherApi() {
           iconNumber = currentSet.current.weather[0].icon;
           uvindex.textContent = currentSet.current.uvindex;
           weatherIcon.innerHTML = `<img src='./assets/images/${iconNumber}.png'/>`;
+
+          //date change
+
+          $(".fivecards .card").each(function () {
+            let numberOfDay = parseInt(
+              $(this).find(".card-title").attr("data-number")
+            );
+            let chosenDate = currentSet.daily[numberOfDay];
+            iconNumber = currentSet.daily[numberOfDay].weather[0].icon;
+
+            $(this).find(".card-title").text(dateConversion(chosenDate.dt));
+            $(this).find(".card-subtext").text(chosenDate.weather[0].main);
+            $(this)
+              .find(".temperature")
+              .text(tempCoversion(chosenDate.temp.day) + "°F");
+            $(this)
+              .find(".wind")
+              .text(chosenDate.wind_speed + "MPH");
+            $(this).find(".humid").text(chosenDate.humidity);
+            $(this)
+              .find(".weather-icons")
+              .html(`<img src='./assets/images/${iconNumber}.png'/>`);
+            $(this).find("#uvi").text(chosenDate.uvi);
+          });
         });
     });
 }
