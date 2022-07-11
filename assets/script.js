@@ -1,14 +1,14 @@
-let cityBtn = document.querySelector("#citybutton");
+let cityBtn = document.querySelector("#city-button");
 let weatherP = document.querySelector("#weather-p");
 let cityDisplay = document.querySelector("#cityname");
 let tempDisplay = document.querySelector("#temp");
 let windSpeed = document.querySelector("#windspeed");
 let humidity = document.querySelector("#humidity");
-let uvindexDisplay = document.querySelector("#uvindexdisplay");
+let uvIndexDisplay = document.querySelector("#uvindexdisplay");
 let weatherIcon = document.querySelector("#weather-icon");
 let cityResultList = document.querySelector("#cityresultlist");
 let forecast = document.querySelector("#forecast");
-let uvindex = document.querySelector("#uvindex");
+let uvIndex = document.querySelector("#uvindex");
 let cityResult; //city search result
 let iconNumber;
 let storage = []; //stores result data
@@ -16,7 +16,7 @@ let storage = []; //stores result data
 searchRetrieveButton();
 
 function fiveDayWeather() {
-  cityResult = document.querySelector("#cityresult").value;
+  cityResult = document.querySelector("#city-result").value;
   searchBtnCreate();
   weatherApi(cityResult);
 }
@@ -35,7 +35,7 @@ function weatherApi() {
       let lat = fiveDayWeather.city.coord.lat;
       let lon = fiveDayWeather.city.coord.lon;
 
-      cityResult = document.querySelector("#cityresult").value;
+      cityResult = document.querySelector("#city-result").value;
       let requestedUrl2 = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude={part}&appid=ae0ce5ce2adbe30790cc3682a20204c0`;
 
       fetch(requestedUrl2)
@@ -50,9 +50,9 @@ function weatherApi() {
             tempCoversion(currentSet.current.temp) + "°F";
           windSpeed.textContent = currentSet.current.wind_speed + "MPH";
           humidity.textContent = currentSet.current.humidity;
-          uvindexDisplay.textContent = currentSet.current.uvindexDisplay;
+          uvIndexDisplay.textContent = currentSet.current.uvIndexDisplay;
           iconNumber = currentSet.current.weather[0].icon;
-          uvindex.textContent = currentSet.current.uvindex;
+          uvIndex.textContent = currentSet.current.uvIndex;
           weatherIcon.innerHTML = `<img src='./assets/images/${iconNumber}.png'/>`;
 
           //date change
@@ -72,11 +72,11 @@ function weatherApi() {
             $(this)
               .find(".wind")
               .text(chosenDate.wind_speed + "MPH");
-            $(this).find(".humid").text(chosenDate.humidity);
+            $(this).find(".humidity").text(chosenDate.humidity);
             $(this)
               .find(".weather-icons")
               .html(`<img src='./assets/images/${iconNumber}.png'/>`);
-            $(this).find("#uvi").text(chosenDate.uvi);
+            $(this).find("#uvindex").text(chosenDate.uvi);
 
             //uvindex color change logic
             if (chosenDate.current.uvi < 3) {
@@ -139,6 +139,10 @@ function searchRetrieveButton() {
     cityResultList.append(buttonList);
   }
 }
+
+$("#cityresultlist").on("click", function (event) {
+  weatherApi(event.target.textContent);
+});
 
 cityBtn.addEventListener("click", fiveDayWeather);
 
