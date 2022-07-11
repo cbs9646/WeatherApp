@@ -1,0 +1,18 @@
+main {
+    background-color: rgb(90, 133, 199);
+}
+
+li {
+    list-style: none;
+}
+
+ul {
+    width: 180px;
+}
+
+.uvi {
+    border-radius: 10%
+    width: fit-content;
+    padding: 0px 4px 0px 4px;
+    box-shadow: black;
+}
