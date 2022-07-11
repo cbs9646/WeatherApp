@@ -119,4 +119,35 @@ function searchBtnCreate() {
       return;
     }
   }
+
+  let buttonList = document.createElement("li");
+  let prevSearchButton = document.createElement("button");
+  prevSearchButton.textContent = cityResult;
+  buttonList.append(prevSearchButton);
+  cityResultList.append(buttonList);
+  storage.push(cityResult);
+  localStorage.setItem("storageArray", JSON.stringify(storage));
+}
+
+function searchRetrieveButton() {
+  storage = JSON.parse(localStorage.getItem("storage")) || [];
+  for (let i = 0; i < storage.lenght; i++) {
+    let buttonList = document.createElement("li");
+    let prevSearchButton = document.createElement("button");
+    prevSearchButton.textContent = storage[i];
+    buttonList.append(prevSearchButton);
+    cityResultList.append(buttonList);
+  }
+}
+
+cityBtn.addEventListener("click", fiveDayWeather);
+
+function uviColorChange() {
+  if (currentSet.current.uvi > 2 && currentSet.current.uvi < 7) {
+    $("#uvi").addClass("bg-warning");
+    $("#uvi").removeClass("bg-success");
+  } else if (currentSet.current.uvi > 6) {
+    $("#uvi").addClass("bg-warning");
+    $("#uvi").removeClass("bg-success");
+  }
 }
