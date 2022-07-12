@@ -1,17 +1,17 @@
 let cityBtn = document.querySelector("#city-button");
 let weatherP = document.querySelector("#weather-p");
-let cityDisplay = document.querySelector("#cityname");
+let cityDisplay = document.querySelector("#city-name");
 let tempDisplay = document.querySelector("#temp");
-let windSpeed = document.querySelector("#windspeed");
-let humidity = document.querySelector("#humidity");
-let uvIndexDisplay = document.querySelector("#uvindexdisplay");
-let weatherIcon = document.querySelector("#weather-icon");
-let cityResultList = document.querySelector("#cityresultlist");
+let windDisplay = document.querySelector("#wind-speed");
+let humidDisplay = document.querySelector("#humidity");
+let uviDisplay = document.querySelector("#uvi");
+let weatherIcon = document.querySelector(".weather-icon");
+let cityResultList = document.querySelector("#city-search-list");
 let forecast = document.querySelector("#forecast");
-let uvIndex = document.querySelector("#uvindex");
+let uvi = document.querySelector("#uvi");
 let cityResult; //city search result
 let iconNumber;
-let storage = []; //stores result data
+let storageArray = []; //stores result data
 
 searchRetrieveButton();
 
@@ -48,16 +48,16 @@ function weatherApi() {
           forecast.textContent = currentSet.current.weather[0].main;
           tempDisplay.textContent =
             tempCoversion(currentSet.current.temp) + "°F";
-          windSpeed.textContent = currentSet.current.wind_speed + "MPH";
-          humidity.textContent = currentSet.current.humidity;
-          uvIndexDisplay.textContent = currentSet.current.uvIndexDisplay;
+          windDisplay.textContent = currentSet.current.wind_speed + "MPH";
+          humidDisplay.textContent = currentSet.current.humidity;
+          uviDisplay.textContent = currentSet.current.uviDisplay;
           iconNumber = currentSet.current.weather[0].icon;
-          uvIndex.textContent = currentSet.current.uvIndex;
+          uvi.textContent = currentSet.current.uvi;
           weatherIcon.innerHTML = `<img src='./assets/images/${iconNumber}.png'/>`;
 
           //date change
 
-          $(".fivecards .card").each(function () {
+          $(".five-cards .card").each(function () {
             let numberOfDay = parseInt(
               $(this).find(".card-title").attr("data-number")
             );
@@ -72,25 +72,25 @@ function weatherApi() {
             $(this)
               .find(".wind")
               .text(chosenDate.wind_speed + "MPH");
-            $(this).find(".humidity").text(chosenDate.humidity);
+            $(this).find(".humid").text(chosenDate.humidity);
             $(this)
-              .find(".weather-icons")
+              .find(".weather-icon")
               .html(`<img src='./assets/images/${iconNumber}.png'/>`);
-            $(this).find("#uvindex").text(chosenDate.uvi);
+            $(this).find("#uvi").text(chosenDate.uvi);
 
             //uvindex color change logic
-            if (chosenDate.current.uvi < 3) {
+            if (currentSet.current.uvi < 3) {
               $("#uvic").addClass("bg-success");
               $("#uvic").removeClass("bg-warning");
               $("#uvic").removeClass("bg-danger");
             } else if (
-              chosenDate.current.uvi > 2 &&
-              chosenDate.current.uvi < 7
+              currentSet.current.uvi > 2 &&
+              currentSet.current.uvi < 7
             ) {
               $("#uvic").addClass("bg-warning");
               $("#uvic").removeClass("bg-success");
               $("#uvic").removeClass("bg-danger");
-            } else if (chosenDate.current.uvi > 6) {
+            } else if (currentSet.current.uvi > 6) {
               $("#uvic").addClass("bg-danger");
               $("#uvic").removeClass("bg-success");
               $("#uvic").removeClass("bg-warning");
@@ -114,8 +114,8 @@ function tempCoversion(K) {
 }
 
 function searchBtnCreate() {
-  for (let i = 0; i < storage.length; i++) {
-    if (storage[i] === cityResult) {
+  for (let i = 0; i < storageArray.length; i++) {
+    if (storageArray[i] === cityResult) {
       return;
     }
   }
@@ -125,13 +125,13 @@ function searchBtnCreate() {
   prevSearchButton.textContent = cityResult;
   buttonList.append(prevSearchButton);
   cityResultList.append(buttonList);
-  storage.push(cityResult);
-  localStorage.setItem("storageArray", JSON.stringify(storage));
+  storageArray.push(cityResult);
+  localStorage.setItem("storageArray", JSON.stringify(storageArray));
 }
 
 function searchRetrieveButton() {
-  storage = JSON.parse(localStorage.getItem("storage")) || [];
-  for (let i = 0; i < storage.lenght; i++) {
+  storageArray = JSON.parse(localStorage.getItem("storageArray")) || [];
+  for (let i = 0; i < storageArray.lenght; i++) {
     let buttonList = document.createElement("li");
     let prevSearchButton = document.createElement("button");
     prevSearchButton.textContent = storage[i];
@@ -140,7 +140,7 @@ function searchRetrieveButton() {
   }
 }
 
-$("#cityresultlist").on("click", function (event) {
+$("#city-search-list").on("click", function (event) {
   weatherApi(event.target.textContent);
 });
 
